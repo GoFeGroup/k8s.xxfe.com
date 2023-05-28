@@ -1,18 +1,18 @@
 baseURL = 'http://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = '安装K8S | 君自强'
 theme = "hugo-book"
 
-[menu]
-[[menu.before]]
-  name = "Github"
-  url = "https://github.com/GoFeGroup/k8s.xxfe.com"
-  weight = 10
-
-[[menu.after]]
-  name = "Hugo Themes"
-  url = "https://themes.gohugo.io/hugo-book/"
-  weight = 20
+#[menu]
+#[[menu.before]]
+#  name = "Github"
+#  url = "https://github.com/GoFeGroup/k8s.xxfe.com"
+#  weight = 10
+#
+#[[menu.after]]
+#  name = "Hugo Themes"
+#  url = "https://themes.gohugo.io/hugo-book/"
+#  weight = 20
 
 
 [params]
