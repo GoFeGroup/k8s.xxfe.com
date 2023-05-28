@@ -12,8 +12,10 @@ main.container {
 
 .markdown {
     font-size: 14px;
+    padding: 40px 0 60px 0;
+
+    p {
+        text-indent: 1.1em;
+    }
 }
 
-.markdown>:first-child {
-    padding-top: 40px;
-}
