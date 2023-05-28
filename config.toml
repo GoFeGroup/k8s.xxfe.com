@@ -14,7 +14,11 @@ theme = "hugo-book"
 #  url = "https://themes.gohugo.io/hugo-book/"
 #  weight = 20
 
-
 [params]
   BookTheme = 'dark'
   BookSection = '*'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
