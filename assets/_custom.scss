@@ -17,5 +17,36 @@ main.container {
     p {
         text-indent: 1.1em;
     }
+
+    ul {
+        color: #f8f8f2;
+        background-color: #272822;
+        border-radius: 0.25em;
+        font-family: roboto mono, monospace;
+        overflow-x: auto;
+        font-size: 0.875em;
+        line-height: 1.8em;
+        margin: 1em 0px;
+        padding: 1em 2em;
+    }
 }
 
+.book-menu .book-menu-content,
+.markdown pre {
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #B5BECB;
+    }
+
+    &::-webkit-scrollbar-track{
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #EDEDED;
+    }
+}
