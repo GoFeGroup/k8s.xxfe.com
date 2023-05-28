@@ -1,4 +1,4 @@
-baseURL = 'http://example.org/'
+baseURL = 'https://k8s.xxfe.com'
 languageCode = 'en-us'
 title = '安装K8S | 君自强'
 theme = "hugo-book"
