@@ -5,4 +5,4 @@ draft: true
 weight: 50
 ---
 
-网络插件
+网络插件gi
