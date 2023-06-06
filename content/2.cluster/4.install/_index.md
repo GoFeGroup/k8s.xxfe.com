@@ -68,3 +68,10 @@ $ kubeadm join 192.168.64.6:6443 --token xxx \
     --discovery-token-ca-cert-hash sha256:xxxx \
     --control-plane 
 ```
+
+## 跳过kubeproxy
+
+```bash
+$ kubeadm init \
+  --skip-phases=addon/kube-proxy
+```
