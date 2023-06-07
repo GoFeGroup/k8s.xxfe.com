@@ -16,7 +16,25 @@ weight: 50
 3. Cilium是使用EBPF技术的网络套件，功能丰富。
 
 
+
+
+
+### 常见网络插件对比
+
+| 功能          | calico                     | flannel        | cilium                               | fabric                                |
+| ------------- | -------------------------- | -------------- | ------------------------------------ | ------------------------------------- |
+| underlay模式  | 是，依赖BPG                | 否             | 是，依赖BPG                          | 是，不依赖BGP但需要提供独立网络       |
+| overlay模式   | vxlan、ipip                | vxlan          | vxlan                                | vxlan、gre、geneve、stt               |
+| IPv4+IPv6双栈 | 是                         | 否             | 否                                   | 是                                    |
+| 网络性能损耗  | overlay 20%<br>underlay 3% | overlay 20%    | overlay 20%<br/>underlay 3%          | overlay 20%<br/>underlay 3%           |
+| DPDK          | 不支持                     | 不支持         | 不支持                               | 支持                                  |
+| 网络安全策略  | NetworkPolicy              | 无             | NetworkerPolicy、基于EBPF的L4/L7策略 | 租户隔离、NetworkPolicy、Pod-Security |
+| 可视化        | 商业版支持                 |                | Hubble                               | 支持                                  |
+| ServcieProxy  | 依赖kube-proxy             | 依赖kube-proxy | 基于EBPF实现                         | 基于OVS流表实现                       |
+
+
+
+
 ## 查看规则
 
 - vxlan: bridge fdb
-- 
