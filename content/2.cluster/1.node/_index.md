@@ -33,7 +33,7 @@ sysctl -p /etc/sysctl.d/k8s.conf
 swapoff -a && sed -ri 's/.*swap.*/#&/' /etc/fstab && sysctl -w vm.swappiness=0
 
 # 设置PS1
-sed -i '/^PS1/d' ~/.bashrc
+sed -i '/^export PS1/d' ~/.bashrc
 cat >> ~/.bashrc << EOF
 export PS1="[\[\033[01;32m\]\u❄\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]]☭ "
 EOF
@@ -46,7 +46,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ jammy-backports main rest
 EOF
 
 # 安装软件
-apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https
+apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools
 
 ###################################################################################################
 # 安装Kubernetes 1.23
