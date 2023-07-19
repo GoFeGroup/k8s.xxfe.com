@@ -34,15 +34,18 @@ swapoff -a && sed -ri 's/.*swap.*/#&/' /etc/fstab && sysctl -w vm.swappiness=0
 
 # 设置PS1
 sed -i '/^export PS1/d' ~/.bashrc
+sed -i 's@ls -alF@ls -lF@' ~/.bashrc
 cat >> ~/.bashrc << EOF
 export PS1="[\[\033[01;32m\]\u❄\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]]☭ "
 EOF
+source ~/.bashrc
 
 # 设置软件源
 cat > /etc/apt/sources.list << EOF
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ jammy main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ jammy-updates main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ jammy-backports main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar-updates main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar-backports main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar-security main restricted universe multiverse
 EOF
 
 # 安装软件
@@ -81,5 +84,41 @@ EOF
 
 apt update -y && apt install -y kubelet=1.23.17-00 kubeadm=1.23.17-00 kubectl=1.23.17-00
 systemctl enable kubelet && systemctl start kubelet
+
+```
+
+**编译环境：**
+```bash
+#!/bin/bash
+set -e
+ARCH=amd64
+
+# Golang 1.20.6
+if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
+wget -O- https://go.dev/dl/go1.20.6.linux-$ARCH.tar.gz | tar xz -C /tmp/
+cp -af /tmp/go/* /usr/
+cat >> ~/.bashrc << EOF
+export GOPATH=/workspace
+export GOPRIVATE=*.jd.com
+export GOPROXY=goproxy.cn.direct
+EOF
+source ~/.bashrc
+rm -fr /tmp/go
+
+# Helm 3.12.2
+wget -O- https://get.helm.sh/helm-v3.12.2-linux-$ARCH.tar.gz | tar xz -C /tmp
+cp -af /tmp/linux-$ARCH/helm /usr/bin/
+rm -fr /tmp/linux-$ARCH
+
+# K9S 0.27.4
+wget -O- https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_$ARCH.tar.gz | tar xz -C /tmp/k9s
+cp -af /tmp/k9s/k9s /usr/bin/
+rm -fr /tmp/k9s
+
+# build-essential
+apt update -y && apt install -y build-essential
+
+# EBPF & Perf
+apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic
 
 ```
