@@ -5,7 +5,7 @@ draft: false
 weight: 10
 ---
 
-**一键Prepare脚本：**
+**一键Prepare脚本：for ubuntu 23.04**
 
 ```bash
 #!/bin/bash
