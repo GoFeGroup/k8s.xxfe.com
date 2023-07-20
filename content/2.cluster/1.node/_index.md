@@ -102,7 +102,7 @@ cp -af /tmp/go/* /usr/
 cat >> ~/.bashrc << EOF
 export GOPATH=/workspace
 export GOPRIVATE=*.jd.com
-export GOPROXY=goproxy.cn.direct
+export GOPROXY=goproxy.cn,direct
 EOF
 source ~/.bashrc
 rm -fr /tmp/go
