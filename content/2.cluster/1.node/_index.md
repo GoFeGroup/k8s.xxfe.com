@@ -92,10 +92,11 @@ systemctl enable kubelet && systemctl start kubelet
 ```bash
 #!/bin/bash
 set -e
+
 ARCH=amd64
+if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 
 # Golang 1.20.6
-if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 wget -O- https://go.dev/dl/go1.20.6.linux-$ARCH.tar.gz | tar xz -C /tmp/
 cp -af /tmp/go/* /usr/
 cat >> ~/.bashrc << EOF
@@ -128,4 +129,21 @@ apt install -y flex bison
 
 # RUST
 apt install -y rustc cargo
+```
+
+
+**VSCode Server:**
+```bash
+# 从关于中获取CommitID
+COMMITID=74f6148eb9ea00507ec113ec51c489d6ffb4b771
+
+ARCH=x64
+if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
+
+rm -fr /tmp/vscode-server-linux-${ARCH}
+wget -O-  https://update.code.visualstudio.com/commit:${COMMITID}/server-linux-${ARCH}/stable | tar xz -C /tmp/
+
+mkdir -p ~/.vscode-server/bin
+rm -fr ~/.vscode-server/bin/*
+mv /tmp/vscode-server-linux-${ARCH}  ~/.vscode-server/bin/${COMMITID}
 ```
