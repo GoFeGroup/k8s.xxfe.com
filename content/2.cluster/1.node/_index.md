@@ -125,4 +125,7 @@ apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic
 
 # Kernel
 apt install -y flex bison
+
+# RUST
+apt install -y rustc cargo
 ```
