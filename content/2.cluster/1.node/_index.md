@@ -123,6 +123,12 @@ apt update -y && apt install -y build-essential universal-ctags cscope
 
 # EBPF & Perf
 apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic
+if [ ! -d /usr/include/asm ]; then
+  ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm
+  ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits
+  ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu
+  ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys
+fi
 
 # Kernel
 apt install -y flex bison
