@@ -66,6 +66,7 @@ cat > /etc/docker/daemon.json <<EOF
 EOF
 
 # 调整docker配置
+sed -i 's@ExecStart=/usr/bin/dockerd -H tcp://127.0.0.1:5050@ExecStart=/usr/bin/dockerd@' /usr/lib/systemd/system/docker.service
 sed -i 's@ExecStart=/usr/bin/dockerd@ExecStart=/usr/bin/dockerd -H tcp://127.0.0.1:5050@' /usr/lib/systemd/system/docker.service
 
 # 随系统启动
@@ -111,6 +112,7 @@ cp -af /tmp/linux-$ARCH/helm /usr/bin/
 rm -fr /tmp/linux-$ARCH
 
 # K9S 0.27.4
+mkdir -p /tmp/k9s
 wget -O- https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_$ARCH.tar.gz | tar xz -C /tmp/k9s
 cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
@@ -121,4 +123,6 @@ apt update -y && apt install -y build-essential
 # EBPF & Perf
 apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic
 
+# Kernel
+apt install -y flex bison
 ```
