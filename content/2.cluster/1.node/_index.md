@@ -118,7 +118,7 @@ cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
 # build-essential
-apt update -y && apt install -y build-essential
+apt update -y && apt install -y build-essential universal-ctags cscope
 
 # EBPF & Perf
 apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic
