@@ -122,7 +122,7 @@ rm -fr /tmp/k9s
 apt update -y && apt install -y build-essential universal-ctags cscope
 
 # EBPF & Perf
-apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic
+apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev
 if [ ! -d /usr/include/asm ]; then
   ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm
   ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits
