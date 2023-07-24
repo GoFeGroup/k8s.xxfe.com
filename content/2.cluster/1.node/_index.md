@@ -119,10 +119,10 @@ cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
 # build-essential
-apt update -y && apt install -y build-essential universal-ctags cscope
+apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev
 
 # EBPF & Perf
-apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev
+apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev libcap-dev libbfd-dev
 if [ ! -d /usr/include/asm ]; then
   ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm
   ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits
