@@ -2,7 +2,8 @@ html,
 body {
     width: 100%;
     height: 100%;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font: 14px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;
+    font-weight: 500;
 }
 
 main.container {
@@ -11,7 +12,6 @@ main.container {
 }
 
 .markdown {
-    font-size: 14px;
     padding: 40px 0 60px 0;
 
     p {
@@ -28,6 +28,10 @@ main.container {
         line-height: 1.8em;
         margin: 1em 0px;
         padding: 1em 2em;
+    }
+
+    code {
+        font-size: 1em;
     }
 }
 
