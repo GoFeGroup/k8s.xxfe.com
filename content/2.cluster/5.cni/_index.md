@@ -2,6 +2,7 @@
 title: "部署网络插件"
 date: 2023-05-28T15:56:43+08:00
 draft: false
+bookCollapseSection: true
 weight: 50
 ---
 
