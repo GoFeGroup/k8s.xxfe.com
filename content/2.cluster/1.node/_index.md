@@ -42,11 +42,13 @@ EOF
 source ~/.bashrc
 
 # 设置软件源
+OsCode=$(grep VERSION_CODENAME /etc/os-release  | awk -F= '{print $2}')
+if [ "$(uname -i)" == "aarch64" ]; then OsArch="-ports"; fi
 cat > /etc/apt/sources.list << EOF
-deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar-updates main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar-backports main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu-ports/ lunar-security main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode} main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-updates main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-backports main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-security main restricted universe multiverse
 EOF
 
 # 安装软件
