@@ -52,7 +52,7 @@ deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-security main restric
 EOF
 
 # 安装软件
-apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools
+apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools ipset
 
 ###################################################################################################
 # 安装Kubernetes 1.23
