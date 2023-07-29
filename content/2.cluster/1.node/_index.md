@@ -122,7 +122,7 @@ cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
 # build-essential
-apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev
+apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev pkg-config
 
 # EBPF & Perf
 apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev libcap-dev libbfd-dev
@@ -134,7 +134,7 @@ if [ ! -d /usr/include/asm ]; then
 fi
 
 # Kernel
-apt install -y flex bison
+apt install -y flex bison bc pahole
 
 # RUST
 apt install -y rustc cargo
