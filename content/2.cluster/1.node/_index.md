@@ -102,6 +102,7 @@ if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 # Golang 1.20.6
 wget -O- https://go.dev/dl/go1.20.6.linux-$ARCH.tar.gz | tar xz -C /tmp/
 cp -af /tmp/go/* /usr/
+sed -i '/^export GO/d' ~/.bashrc
 cat >> ~/.bashrc << EOF
 export GOPATH=/workspace
 export GOPRIVATE=*.jd.com
