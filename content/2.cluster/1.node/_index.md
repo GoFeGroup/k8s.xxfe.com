@@ -102,6 +102,7 @@ if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 # Golang 1.20.6
 wget -O- https://go.dev/dl/go1.20.6.linux-$ARCH.tar.gz | tar xz -C /tmp/
 cp -af /tmp/go/* /usr/
+sed -i '/^export GO/d' ~/.bashrc
 cat >> ~/.bashrc << EOF
 export GOPATH=/workspace
 export GOPRIVATE=*.jd.com
@@ -122,7 +123,7 @@ cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
 # build-essential
-apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev
+apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev pkg-config
 
 # EBPF & Perf
 apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev libcap-dev libbfd-dev
@@ -134,7 +135,7 @@ if [ ! -d /usr/include/asm ]; then
 fi
 
 # Kernel
-apt install -y flex bison
+apt install -y flex bison bc pahole
 
 # RUST
 apt install -y rustc cargo
