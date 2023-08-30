@@ -127,15 +127,13 @@ apt update -y && apt install -y build-essential universal-ctags cscope libssl-de
 
 # EBPF & Perf
 apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev libcap-dev libbfd-dev
-if [ ! -d /usr/include/asm ]; then
-  ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm
-  ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits
-  ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu
-  if [ -d /usr/include/sys ]; then
-    cp -af /usr/include/$(uname -i)-linux-gnu/sys/* /usr/include/sys/
-  else
-    ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys
-  fi
+if [ ! -d /usr/include/asm ]; then ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm; fi
+if [ ! -d /usr/include/bits ]; then ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits; fi
+if [ ! -d /usr/include/gnu ]; then ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu; fi
+if [ -d /usr/include/sys ]; then 
+  cp -af /usr/include/$(uname -i)-linux-gnu/sys/* /usr/include/sys/;
+else
+  ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys;
 fi
 
 # Kernel
