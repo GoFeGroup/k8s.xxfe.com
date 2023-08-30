@@ -131,7 +131,11 @@ if [ ! -d /usr/include/asm ]; then
   ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm
   ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits
   ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu
-  ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys
+  if [ -d /usr/include/sys ]; then
+    cp -af /usr/include/$(uname -i)-linux-gnu/sys/* /usr/include/sys/
+  else
+    ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys
+  fi
 fi
 
 # Kernel
