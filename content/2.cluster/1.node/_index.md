@@ -64,7 +64,7 @@ apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https
 ###################################################################################################
 # 安装Kubernetes 1.23
 ###################################################################################################
-apt install -y docker.io
+apt install -y docker.io containerd
 
 # 设置docker配置
 cat > /etc/docker/daemon.json <<EOF
@@ -81,6 +81,12 @@ sed -i 's@ExecStart=/usr/bin/dockerd@ExecStart=/usr/bin/dockerd -H tcp://127.0.0
 
 # 随系统启动
 systemctl daemon-reload && systemctl enable docker && systemctl restart docker
+
+# containerd
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+sed -i 's#SystemdCgroup = false#SystemdCgroup = true#g' /etc/containerd/config.toml
+systemctl daemon-reload && systemctl enable containerd && systemctl restart containerd
 
 ###################################################################################################
 # 安装Kubernetes 1.23
