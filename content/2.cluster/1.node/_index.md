@@ -153,7 +153,7 @@ fi
 apt install -y flex bison bc pahole
 
 # RUST
-apt install -y rustc cargo
+apt install -y rustc cargo rustfmt rust-src
 ```
 
 
