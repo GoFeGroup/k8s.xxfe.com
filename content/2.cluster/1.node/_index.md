@@ -99,8 +99,15 @@ cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
 EOF
 
-apt update -y && apt install -y kubelet=1.23.17-00 kubeadm=1.23.17-00 kubectl=1.23.17-00
+apt update -y && apt install -y kubelet kubeadm kubectl
 systemctl enable kubelet && systemctl start kubelet
+
+# crictl
+sed -i '/^alias crictl=/d' ~/.bashrc
+cat >> ~/.bashrc << EOF
+alias crictl='crictl --runtime-endpoint unix:///run/containerd/containerd.sock'
+EOF
+source ~/.bashrc
 
 ```
 
@@ -148,6 +155,10 @@ if [ -d /usr/include/sys ]; then
 else
   ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys;
 fi
+
+# docker buildx
+mkdir -p /root/.docker/cli-plugins/
+wget https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-${ARCH} -O /root/.docker/cli-plugins/docker-buildx
 
 # Kernel
 apt install -y flex bison bc pahole
