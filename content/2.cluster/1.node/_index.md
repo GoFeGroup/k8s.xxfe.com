@@ -159,6 +159,7 @@ fi
 # docker buildx
 mkdir -p /root/.docker/cli-plugins/
 wget https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-${ARCH} -O /root/.docker/cli-plugins/docker-buildx
+chmod +x /root/.docker/cli-plugins/docker-buildx
 
 # Kernel
 apt install -y flex bison bc pahole
