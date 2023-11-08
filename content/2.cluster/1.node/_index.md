@@ -168,13 +168,6 @@ wget -O- https://github.com/sunny0826/kubecm/releases/download/v0.25.0/kubecm_v0
 cp -af /tmp/kubecm/kubecm /usr/bin/kc
 rm -fr /tmp/kubecm
 
-sed -i '/^alias kc=/d' ~/.bashrc
-cat >> ~/.bashrc << EOF
-alias kc='kubecm'
-EOF
-source ~/.bashrc
-
-
 # Kernel
 apt install -y flex bison bc pahole
 
