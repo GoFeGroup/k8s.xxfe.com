@@ -199,8 +199,9 @@ else
 fi
 
 # docker buildx
+BUILDX_VERSION=v0.12.0
 mkdir -p /root/.docker/cli-plugins/
-wget https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-${ARCH} -O /root/.docker/cli-plugins/docker-buildx
+wget https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-${ARCH} -O /root/.docker/cli-plugins/docker-buildx
 chmod +x /root/.docker/cli-plugins/docker-buildx
 
 # kubecm 0.25.0
