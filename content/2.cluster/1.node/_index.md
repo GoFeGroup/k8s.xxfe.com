@@ -120,8 +120,9 @@ set -e
 ARCH=amd64
 if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 
-# Golang 1.20.6
-wget -O- https://go.dev/dl/go1.20.6.linux-$ARCH.tar.gz | tar xz -C /tmp/
+# Golang 1.21.5
+GOLANG_VERSION=1.21.5
+wget -O- https://go.dev/dl/go${GOLANG_VERSION}.linux-$ARCH.tar.gz | tar xz -C /tmp/
 cp -af /tmp/go/* /usr/
 sed -i '/^export GO/d' ~/.bashrc
 cat >> ~/.bashrc << EOF
@@ -132,14 +133,16 @@ EOF
 source ~/.bashrc
 rm -fr /tmp/go
 
-# Helm 3.12.2
-wget -O- https://get.helm.sh/helm-v3.12.2-linux-$ARCH.tar.gz | tar xz -C /tmp
+# Helm 3.13.3
+HELM_VERSION=v3.13.3
+wget -O- https://get.helm.sh/helm-${HELM_VERSION}-linux-$ARCH.tar.gz | tar xz -C /tmp
 cp -af /tmp/linux-$ARCH/helm /usr/bin/
 rm -fr /tmp/linux-$ARCH
 
-# K9S 0.27.4
+# K9S 0.29.1
+K9S_VERSION=v0.29.1
 mkdir -p /tmp/k9s
-wget -O- https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_$ARCH.tar.gz | tar xz -C /tmp/k9s
+wget -O- https://github.com/derailed/k9s/releases/download/${K9S_VERSION}/k9s_Linux_$ARCH.tar.gz | tar xz -C /tmp/k9s
 cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
@@ -162,9 +165,10 @@ mkdir -p /root/.docker/cli-plugins/
 wget https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-${ARCH} -O /root/.docker/cli-plugins/docker-buildx
 chmod +x /root/.docker/cli-plugins/docker-buildx
 
-# kubecm
+# kubecm 0.25.0
+KUBECM_VERSION=v0.25.0
 mkdir -p /tmp/kubecm
-wget -O- https://github.com/sunny0826/kubecm/releases/download/v0.25.0/kubecm_v0.25.0_Linux_${ARCH}.tar.gz | tar xz -C /tmp/kubecm
+wget -O- https://github.com/sunny0826/kubecm/releases/download/${KUBECM_VERSION}/kubecm_${KUBECM_VERSION}_Linux_${ARCH}.tar.gz | tar xz -C /tmp/kubecm
 cp -af /tmp/kubecm/kubecm /usr/bin/kc
 rm -fr /tmp/kubecm
 
