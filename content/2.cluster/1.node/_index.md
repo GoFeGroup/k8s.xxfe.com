@@ -50,22 +50,31 @@ EOF
 source ~/.bashrc
 
 # 设置软件源
-OsCode=$(grep VERSION_CODENAME /etc/os-release  | awk -F= '{print $2}')
-if [ "$(uname -i)" == "aarch64" ]; then OsArch="-ports"; fi
-cat > /etc/apt/sources.list << EOF
+OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' ) 
+
+if [ "$OS" == "ubuntu" ]; then
+    OsCode=$(grep VERSION_CODENAME /etc/os-release  | awk -F= '{print $2}')
+    if [ "$(uname -i)" == "aarch64" ]; then OsArch="-ports"; fi
+    cat > /etc/apt/sources.list << EOF
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode} main restricted universe multiverse
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-updates main restricted universe multiverse
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-backports main restricted universe multiverse
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-security main restricted universe multiverse
 EOF
 
-# 安装软件
-apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools ipset
+    # 安装软件
+    apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools ipset
 
-###################################################################################################
-# 安装Kubernetes 1.23
-###################################################################################################
-apt install -y docker.io containerd
+    ###################################################################################################
+    # 安装Kubernetes 1.23
+    ###################################################################################################
+    apt install -y docker.io containerd iproute-tc jq ipvsadm iptables
+else 
+    # 安装docker-ce
+    yum install -y yum-utils
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+fi
 
 # 设置docker配置
 cat > /etc/docker/daemon.json <<EOF
@@ -93,15 +102,31 @@ systemctl daemon-reload && systemctl enable containerd && systemctl restart cont
 # 安装Kubernetes 1.23
 ###################################################################################################
 
-curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+if [ "$OS" == "ubuntu" ]; then
+    curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
 
-# 设置软件源
-cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+    # 设置软件源
+    cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
 EOF
 
-apt update -y && apt install -y kubelet kubeadm kubectl
-systemctl enable kubelet && systemctl start kubelet
+    apt update -y && apt install -y kubelet kubeadm kubectl
+    systemctl enable kubelet && systemctl start kubelet
+
+else
+    cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+    systemctl stop firewalld && systemctl disable firewalld
+    yum install -y kubelet kubeadm kubectl
+    systemctl enable kubelet && systemctl start kubelet
+fi
 
 # crictl
 sed -i '/^alias crictl=/d' ~/.bashrc
@@ -111,7 +136,8 @@ EOF
 source ~/.bashrc
 
 # 启用rc.local
-cat > /etc/systemd/system/rc-local.service <<EOF
+if [ "$OS" == "ubuntu" ]; then
+    cat > /etc/systemd/system/rc-local.service <<EOF
 [Unit]
 Description=/etc/rc.local
 ConditionPathExists=/etc/rc.local
@@ -145,9 +171,10 @@ cat <<EOF >/etc/rc.local
 exit 0
 EOF
 
-chmod +x /etc/rc.local
-systemctl enable rc-local
-systemctl start rc-local.service
+    chmod +x /etc/rc.local
+    systemctl enable rc-local
+    systemctl start rc-local.service
+fi
 ```
 
 **编译环境：**
