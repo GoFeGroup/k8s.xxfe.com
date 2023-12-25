@@ -53,27 +53,27 @@ source ~/.bashrc
 OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' ) 
 
 if [ "$OS" == "ubuntu" ]; then
-    OsCode=$(grep VERSION_CODENAME /etc/os-release  | awk -F= '{print $2}')
-    if [ "$(uname -i)" == "aarch64" ]; then OsArch="-ports"; fi
-    cat > /etc/apt/sources.list << EOF
+  OsCode=$(grep VERSION_CODENAME /etc/os-release  | awk -F= '{print $2}')
+  if [ "$(uname -i)" == "aarch64" ]; then OsArch="-ports"; fi
+  cat > /etc/apt/sources.list << EOF
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode} main restricted universe multiverse
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-updates main restricted universe multiverse
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-backports main restricted universe multiverse
 deb https://mirrors.ustc.edu.cn/ubuntu${OsArch}/ ${OsCode}-security main restricted universe multiverse
 EOF
 
-    # 安装软件
-    apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools ipset
+  # 安装软件
+  apt update -y && apt install -y iptables ipvsadm iproute2 jq apt-transport-https net-tools ipset
 
-    ###################################################################################################
-    # 安装Kubernetes 1.23
-    ###################################################################################################
-    apt install -y docker.io containerd iproute-tc jq ipvsadm iptables
+  ###################################################################################################
+  # 安装Kubernetes 1.23
+  ###################################################################################################
+  apt install -y docker.io containerd iproute-tc jq ipvsadm iptables
 else 
-    # 安装docker-ce
-    yum install -y yum-utils
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  # 安装docker-ce
+  yum install -y yum-utils
+  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 
 # 设置docker配置
@@ -103,18 +103,18 @@ systemctl daemon-reload && systemctl enable containerd && systemctl restart cont
 ###################################################################################################
 
 if [ "$OS" == "ubuntu" ]; then
-    curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+  curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
 
-    # 设置软件源
-    cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+  # 设置软件源
+  cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
 EOF
 
-    apt update -y && apt install -y kubelet kubeadm kubectl
-    systemctl enable kubelet && systemctl start kubelet
+  apt update -y && apt install -y kubelet kubeadm kubectl
+  systemctl enable kubelet && systemctl start kubelet
 
 else
-    cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
 baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
@@ -123,9 +123,9 @@ gpgcheck=1
 repo_gpgcheck=1
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
-    systemctl stop firewalld && systemctl disable firewalld
-    yum install -y kubelet kubeadm kubectl
-    systemctl enable kubelet && systemctl start kubelet
+  systemctl stop firewalld && systemctl disable firewalld
+  yum install -y kubelet kubeadm kubectl
+  systemctl enable kubelet && systemctl start kubelet
 fi
 
 # crictl
@@ -137,7 +137,7 @@ source ~/.bashrc
 
 # 启用rc.local
 if [ "$OS" == "ubuntu" ]; then
-    cat > /etc/systemd/system/rc-local.service <<EOF
+  cat > /etc/systemd/system/rc-local.service <<EOF
 [Unit]
 Description=/etc/rc.local
 ConditionPathExists=/etc/rc.local
@@ -154,7 +154,7 @@ SysVStartPriority=99
 WantedBy=multi-user.target
 EOF
 
-cat <<EOF >/etc/rc.local
+  cat <<EOF >/etc/rc.local
 #!/bin/sh -e
 #
 # rc.local
@@ -171,9 +171,9 @@ cat <<EOF >/etc/rc.local
 exit 0
 EOF
 
-    chmod +x /etc/rc.local
-    systemctl enable rc-local
-    systemctl start rc-local.service
+  chmod +x /etc/rc.local
+  systemctl enable rc-local
+  systemctl start rc-local.service
 fi
 ```
 
@@ -188,7 +188,7 @@ if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 # Golang 1.21.5
 GOLANG_VERSION=1.21.5
 wget -O- https://go.dev/dl/go${GOLANG_VERSION}.linux-$ARCH.tar.gz | tar xz -C /tmp/
-cp -af /tmp/go/* /usr/
+cp -af /tmp/go/* /usr/local/
 sed -i '/^export GO/d' ~/.bashrc
 cat >> ~/.bashrc << EOF
 export GOPATH=/workspace
@@ -211,18 +211,23 @@ wget -O- https://github.com/derailed/k9s/releases/download/${K9S_VERSION}/k9s_Li
 cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
-# build-essential
-apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev pkg-config
+# OS
+OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' ) 
 
-# EBPF & Perf
-apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev libcap-dev libbfd-dev
-if [ ! -d /usr/include/asm ]; then ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm; fi
-if [ ! -d /usr/include/bits ]; then ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits; fi
-if [ ! -d /usr/include/gnu ]; then ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu; fi
-if [ -d /usr/include/sys ]; then 
-  cp -af /usr/include/$(uname -i)-linux-gnu/sys/* /usr/include/sys/;
-else
-  ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys;
+if [ "$OS" = "ubuntu" ]; then
+  # build-essential
+  apt update -y && apt install -y build-essential universal-ctags cscope libssl-dev pkg-config
+
+  # EBPF & Perf
+  apt install -y clang llvm bpftrace linux-tools-common linux-tools-generic libelf-dev libcap-dev libbfd-dev
+  if [ ! -d /usr/include/asm ]; then ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm; fi
+  if [ ! -d /usr/include/bits ]; then ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits; fi
+  if [ ! -d /usr/include/gnu ]; then ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu; fi
+  if [ -d /usr/include/sys ]; then 
+    cp -af /usr/include/$(uname -i)-linux-gnu/sys/* /usr/include/sys/;
+  else
+    ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys;
+  fi
 fi
 
 # docker buildx
@@ -238,11 +243,15 @@ wget -O- https://github.com/sunny0826/kubecm/releases/download/${KUBECM_VERSION}
 cp -af /tmp/kubecm/kubecm /usr/bin/kc
 rm -fr /tmp/kubecm
 
-# Kernel
-apt install -y flex bison bc pahole
+if [ "$OS" = "ubuntu" ]; then
+  # Kernel
+  apt install -y flex bison bc pahole
 
-# RUST
-apt install -y rustc cargo rustfmt rust-src
+  # RUST
+  apt install -y rustc cargo rustfmt rust-src
+else 
+  yum install -y flex bison
+fi
 ```
 
 
