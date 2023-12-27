@@ -1,6 +1,7 @@
 ---
 title: "初始化集群"
 date: 2023-05-28T15:56:15+08:00
+bookCollapseSection: true
 draft: false
 weight: 40
 ---
