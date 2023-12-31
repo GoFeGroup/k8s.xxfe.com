@@ -46,6 +46,7 @@ sed -i '/^export PS1/d' ~/.bashrc
 sed -i 's@ls -alF@ls -lF@' ~/.bashrc
 cat >> ~/.bashrc << EOF
 export PS1="[\[\033[01;32m\]\u❄\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]]☭ "
+export PS1="\$PS1\[\e]1337;CurrentDir="'\$(pwd)\a\]'
 EOF
 source ~/.bashrc
 
