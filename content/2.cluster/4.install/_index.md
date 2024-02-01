@@ -12,7 +12,7 @@ weight: 40
 
 ```bash
 # 使用docker作为容器管理工具，需指定1.23版本，同时指定aliyun镜像仓库
-$ kubeadm init --apiserver-advertise-address=192.168.64.6 \
+$ kubeadm init --apiserver-advertise-address=192.168.64.2 \
     --image-repository registry.aliyuncs.com/google_containers \
     --kubernetes-version=v1.23.15 \
     --service-cidr=10.96.0.0/12 \
@@ -29,7 +29,7 @@ $ kubeadm init --apiserver-advertise-address=192.168.64.6 \
 如果需要支持IPv6，可在cidr中增加IPv6的地址段:
 
 ```bash
-kubeadm init --apiserver-advertise-address=192.168.64.6 \
+kubeadm init --apiserver-advertise-address=192.168.64.2 \
     --image-repository registry.aliyuncs.com/google_containers \
     --kubernetes-version=v1.23.15 \
     --service-cidr=10.96.0.0/12,2001:db8:41:1::/112 \
@@ -39,12 +39,12 @@ kubeadm init --apiserver-advertise-address=192.168.64.6 \
 
 ## 多Master部署
 
-如果需要支持多Master部署，那么需要首先修改集群的kubeadm-config，增加：controlPlaneEndpoint: 192.168.64.6:6443
+如果需要支持多Master部署，那么需要首先修改集群的kubeadm-config，增加：controlPlaneEndpoint: 192.168.64.2:6443
 
 ```yaml
     kind: ClusterConfiguration
     kubernetesVersion: v1.23.15
-    controlPlaneEndpoint: 192.168.64.6:6443
+    controlPlaneEndpoint: 192.168.64.2:6443
 ```
 
 然后在第二台Master上部署证书
@@ -65,7 +65,7 @@ $ kubeadm token create --print-join-command
 在第二台master上执行Join命令:
 
 ```bash
-$ kubeadm join 192.168.64.6:6443 --token xxx \
+$ kubeadm join 192.168.64.2:6443 --token xxx \
     --discovery-token-ca-cert-hash sha256:xxxx \
     --control-plane 
 ```
