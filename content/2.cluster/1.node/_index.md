@@ -51,7 +51,7 @@ EOF
 source ~/.bashrc
 
 # 设置软件源
-OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' ) 
+OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' )
 
 if [ "$OS" == "ubuntu" ]; then
   OsCode=$(grep VERSION_CODENAME /etc/os-release  | awk -F= '{print $2}')
@@ -69,8 +69,8 @@ EOF
   ###################################################################################################
   # 安装Kubernetes 1.23
   ###################################################################################################
-  apt install -y docker.io containerd iproute-tc jq ipvsadm iptables
-else 
+  apt install -y docker.io containerd jq ipvsadm iptables
+else
   # 安装docker-ce
   yum install -y yum-utils
   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -142,7 +142,7 @@ if [ "$OS" == "ubuntu" ]; then
 [Unit]
 Description=/etc/rc.local
 ConditionPathExists=/etc/rc.local
- 
+
 [Service]
 Type=forking
 ExecStart=/etc/rc.local start
@@ -150,7 +150,7 @@ TimeoutSec=0
 StandardOutput=tty
 RemainAfterExit=yes
 SysVStartPriority=99
- 
+
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -213,7 +213,7 @@ cp -af /tmp/k9s/k9s /usr/bin/
 rm -fr /tmp/k9s
 
 # OS
-OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' ) 
+OS=$(grep ^ID= /etc/os-release | awk -F= '{print $2}' | sed 's/"//g' )
 
 if [ "$OS" = "ubuntu" ]; then
   # build-essential
@@ -224,7 +224,7 @@ if [ "$OS" = "ubuntu" ]; then
   if [ ! -d /usr/include/asm ]; then ln -s /usr/include/$(uname -i)-linux-gnu/asm /usr/include/asm; fi
   if [ ! -d /usr/include/bits ]; then ln -s /usr/include/$(uname -i)-linux-gnu/bits /usr/include/bits; fi
   if [ ! -d /usr/include/gnu ]; then ln -s /usr/include/$(uname -i)-linux-gnu/gnu /usr/include/gnu; fi
-  if [ -d /usr/include/sys ]; then 
+  if [ -d /usr/include/sys ]; then
     cp -af /usr/include/$(uname -i)-linux-gnu/sys/* /usr/include/sys/;
   else
     ln -s /usr/include/$(uname -i)-linux-gnu/sys /usr/include/sys;
@@ -250,7 +250,7 @@ if [ "$OS" = "ubuntu" ]; then
 
   # RUST
   apt install -y rustc cargo rustfmt rust-src
-else 
+else
   yum install -y flex bison
 fi
 ```
