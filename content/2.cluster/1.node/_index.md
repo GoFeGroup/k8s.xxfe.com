@@ -87,8 +87,8 @@ cat > /etc/docker/daemon.json <<EOF
 EOF
 
 # 调整docker配置
-sed -i 's@ExecStart=/usr/bin/dockerd -H tcp://127.0.0.1:5050@ExecStart=/usr/bin/dockerd@' /usr/lib/systemd/system/docker.service
-sed -i 's@ExecStart=/usr/bin/dockerd@ExecStart=/usr/bin/dockerd -H tcp://127.0.0.1:5050@' /usr/lib/systemd/system/docker.service
+#sed -i 's@ExecStart=/usr/bin/dockerd -H tcp://127.0.0.1:5050@ExecStart=/usr/bin/dockerd@' /usr/lib/systemd/system/docker.service
+#sed -i 's@ExecStart=/usr/bin/dockerd@ExecStart=/usr/bin/dockerd -H tcp://127.0.0.1:5050@' /usr/lib/systemd/system/docker.service
 
 # 随系统启动
 systemctl daemon-reload && systemctl enable docker && systemctl restart docker
