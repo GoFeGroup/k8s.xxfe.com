@@ -186,8 +186,8 @@ set -e
 ARCH=amd64
 if [ "$(uname -i)" = "aarch64" ]; then ARCH=arm64; fi
 
-# Golang 1.22.0
-GOLANG_VERSION=1.22.0
+# Golang 1.22.1
+GOLANG_VERSION=1.22.1
 wget -O- https://go.dev/dl/go${GOLANG_VERSION}.linux-$ARCH.tar.gz | tar xz -C /tmp/
 cp -af /tmp/go/* /usr/local/
 sed -i '/^export GO/d' ~/.bashrc
