@@ -18,6 +18,15 @@ draft: false
 apt install python3-pip
 ```
 
+
+## 创建python虚拟环境
+
+```bash
+apt -y install python3-venv
+python3 -m venv ~/DeepLearning/
+cd ~/DeepLearning/ && source bin/active
+```
+
 ## 安装torch
 
 ```bash
